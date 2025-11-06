@@ -1,7 +1,7 @@
 #include <stddef.h>
 #include "stm32f10x.h"
 #include "stm32f10x_conf.h"
-
+    
 void DelayMC(unsigned int ms)
  {
  volatile unsigned int nCount;
