@@ -188,7 +188,16 @@ void EXTI4_IRQHandler(void)
 void EXTI9_5_IRQHandler(void)
 {
  USART1_putS("Interrupt occurred ! \n\r");
- USART1_putS("But which switch is pressed 1 or 2 ??\n\r");
+ if (EXTI_GetITStatus(EXTI_Line8) != RESET)
+ {
+  USART1_putS("Button 1 is pressed \n\r");
+  //Clear the EXTI line 3 pending bit
+ }
+ if (EXTI_GetITStatus(EXTI_Line9) != RESET)
+ {
+  USART1_putS("Button 2 is pressed \n\r");
+  //Clear the EXTI line 3 pending bit
+ }
  EXTI_ClearITPendingBit(EXTI_Line8);
  EXTI_ClearITPendingBit(EXTI_Line9);
 }
