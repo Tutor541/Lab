@@ -84,7 +84,7 @@ void ADC1_Init(void)
  return ADC_GetConversionValue(ADC1);
  }
 
-  int main(void)
+int main(void)
  {
  unsigned int ADCRead_value = 0;
  GPIO_Configuration();
