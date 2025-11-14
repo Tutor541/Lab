@@ -275,7 +275,7 @@ DelayMC(1);
 t++;
 }
 
-DelayMC(50); /* same tail-delay asเดิม */
+DelayMC(50);
 return check;
 }
 
@@ -283,10 +283,10 @@ return check;
 
 const char AT_test[] = "AT\r\n";
 const char echoOff[] = "ATE0\r\n";
-const char restore[] = "AT+RESTORE\r\n"; // Restore factory settings
+const char restore[] = "AT+RESTORE\r\n";
 const char uart_baud [] = "AT+UART=115200,8,1,0,0\r\n";
 const char list_AP [] = "AT+CWLAP\r\n";
-const char station_mode [] = "AT+CWMODE=1\r\n"; // station mode
+const char station_mode [] = "AT+CWMODE=1\r\n";
 const char conect_to_AP [] = "AT+CWJAP=\"Tenda_48B2E0\",\"1234567890\"\r\n";
 const char disconectAP [] = "AT+CWQAP\r\n";
 const char conect_AP_status [] = "AT+CWJAP?\r\n";
@@ -317,7 +317,7 @@ USART1_putS("< Configuration Finish > \r\n");
 USART1_putS("Start Connecting to ESP01\r\n");
 USART1_putS("Waiting for Echo \r\n");
 
-/* ---- Standard init (เหมือน 8.2/8.3) ---- */
+
 
 USART2_putS(AT_test);
 DelayMC(20);
@@ -367,8 +367,7 @@ waitforOK();
 USART1_putS(rx_buf);
 clear_rx_buf();
 
-/* ---- เปิด TCP connection ไป server ---- */
-msg = "AT+CIPSTART=\"TCP\",\"192.168.34.122\",80\r\n\0"; // แก้ IP ให้ตรงเครื่องตัวเอง
+msg = "AT+CIPSTART=\"TCP\",\"192.168.34.122\",80\r\n\0";
 USART2_putS(msg);
 DelayMC(20);
 waitforOK();
@@ -377,10 +376,10 @@ clear_rx_buf();
 
 while(1)
 {
-/* --------- 1) อ่าน VR0, VR1 ส่งขึ้น TCP server (ส่วนของ 8.3) --------- */
 
-ADCRead0 = readADC1(0); // VR0 (PA0)
-ADCRead1 = readADC1(1); // VR1 (PA1)
+
+ADCRead0 = readADC1(0);
+ADCRead1 = readADC1(1);
 
 adc_msg[0] = digits[(int)(ADCRead0 /1000)%10];
 adc_msg[1] = digits[(int)(ADCRead0 /100)%10];
@@ -401,23 +400,22 @@ adc_msg[11] = '\0';
 USART1_putS("ADC0 ADC1 : ");
 USART1_putS(adc_msg);
 
-/* ขอส่ง 11 byte ไป server */
 msg = "AT+CIPSEND=11\r\n\0";
 USART2_putS(msg);
 DelayMC(20);
-waitforPromp(); // รอ '>'
+waitforPromp();
 clear_rx_buf();
 
-USART2_putS(adc_msg); // ส่งค่าจริง
+USART2_putS(adc_msg);
 DelayMC(20);
 waitforOK();
 USART1_putS(rx_buf);
 clear_rx_buf();
 
-/* --------- 2) รอ command จาก server (ส่วนของ 8.4) --------- */
+
 USART1_putS("Wait for Command\r\n");
 
-if (waitforIPD(500)) // รอสูงสุด 500 ms ถ้าไม่มี ก็ข้ามรอบนี้
+if (waitforIPD(500))
 {
 USART1_putS("Got Command\r\n");
 USART1_putS("--------------------\r\n");
