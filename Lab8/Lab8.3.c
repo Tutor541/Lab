@@ -199,9 +199,8 @@ int main(void)
  static const char digits [] = "0123456789ABCDEF";
  unsigned char adc_msg[] = "xxxx\r\n\n\0";
  GPIO_Configuration();
- USART1_setup();
+ USART12_setup();
  USART2_NVIC_Config();
- USART2_setup();
  USART1_putS("< Configuration Finish > \n\r");
  USART1_putS("Start Connecting to ESP01\r\n\0");
  USART1_putS("Waiting for Echo \n\r");
